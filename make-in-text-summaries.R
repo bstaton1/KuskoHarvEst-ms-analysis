@@ -11,21 +11,6 @@ nv_ISMP = nrow(v_df)
 # number of communities sampled by PSMP
 nv_PSMP = length(unique(harv_all$village))
 
-# function for reporting summaries: a single number
-report_num = function(x, is_percent = FALSE, digits = 0) {
-  if(is_percent) {
-    out = KuskoHarvUtils::percentize(x, digits = digits)
-  } else {
-    out = prettyNum(round(x, digits = digits), big.mark = ",")
-  }
-  return(out)
-}
-
-# function for reporting summaries: the range of a vector
-report_range = function(x, is_percent = FALSE, digits = 0) {
-  paste(prettyNum(round(range(x, na.rm = TRUE), digits), big.mark = ","), collapse = "-")
-}
-
 ##### IN-TEXT NUMBERS: SECTION 'METHODS > STUDY AREA, SPECIES, AND TIMEFRAME #####
 
 # ANS ranges by species
@@ -243,21 +228,21 @@ max_p_covered = apply(p_covered, 1, which.max)
 yrs = 2016:2023
 
 # Chinook: get min and max p-covered and the years they happened
-chinook_minp = report_num(p_covered["chinook",min_p_covered["chinook"]], is_percent = TRUE)
+chinook_minp = msdown::report_num(p_covered["chinook",min_p_covered["chinook"]], is_percent = TRUE)
 chinook_minp_Y = yrs[min_p_covered["chinook"]]
-chinook_maxp = report_num(p_covered["chinook",max_p_covered["chinook"]], is_percent = TRUE)
+chinook_maxp = msdown::report_num(p_covered["chinook",max_p_covered["chinook"]], is_percent = TRUE)
 chinook_maxp_Y = yrs[max_p_covered["chinook"]]
 
 # chum: get min and max p-covered and the years they happened
-chum_minp = report_num(p_covered["chum",min_p_covered["chum"]], is_percent = TRUE)
+chum_minp = msdown::report_num(p_covered["chum",min_p_covered["chum"]], is_percent = TRUE)
 chum_minp_Y = yrs[min_p_covered["chum"]]
-chum_maxp = report_num(p_covered["chum",max_p_covered["chum"]], is_percent = TRUE)
+chum_maxp = msdown::report_num(p_covered["chum",max_p_covered["chum"]], is_percent = TRUE)
 chum_maxp_Y = yrs[max_p_covered["chum"]]
 
 # sockeye: get min and max p-covered and the years they happened
-sockeye_minp = report_num(p_covered["sockeye",min_p_covered["sockeye"]], is_percent = TRUE)
+sockeye_minp = msdown::report_num(p_covered["sockeye",min_p_covered["sockeye"]], is_percent = TRUE)
 sockeye_minp_Y = yrs[min_p_covered["sockeye"]]
-sockeye_maxp = report_num(p_covered["sockeye",max_p_covered["sockeye"]], is_percent = TRUE)
+sockeye_maxp = msdown::report_num(p_covered["sockeye",max_p_covered["sockeye"]], is_percent = TRUE)
 sockeye_maxp_Y = yrs[max_p_covered["sockeye"]]
 
 ##### IN-TEXT NUMBERS: SECTION 'RESULTS > EVALUATION OF EFFORT ESTIMATOR VIA STOCHASTIC SIMULATION > SIMPLE SIMULATION #####
