@@ -1,6 +1,6 @@
 
 # load the opener meta-data: for info about the timing of openers monitored by the in-season program
-data(meta, package = "KuskoHarvData")
+data(openers_all, package = "KuskoHarvData")
 
 # read in the data file
 dat_raw = read.csv(file.path(data_dir, "Calendar Data.csv"))
@@ -33,7 +33,7 @@ v_df$village = factor(v_df$village, levels = v_df$village)
 dat_raw = dat_raw[dat_raw$village %in% unlist(v_list),]
 
 # keep only years that have in-season data
-dat_raw = dat_raw[dat_raw$year %in% unique(year(meta$start)),]
+dat_raw = dat_raw[dat_raw$year %in% unique(year(openers_all$start)),]
 
 # years to calculate calendars for
 yrs = unique(dat_raw$year)
@@ -106,8 +106,9 @@ avg_calendars_agg = calendars_agg |>
   summarize(p_chinook = mean(p_chinook, na.rm = TRUE),
             p_chum = mean(p_chum, na.rm = TRUE),
             p_sockeye = mean(p_sockeye, na.rm = TRUE))
-calendars_agg$p_chum[year(calendars_agg$date) == 2017] = c(avg_calendars_agg$p_chum, 1)
-calendars_agg$p_sockeye[year(calendars_agg$date) == 2017] = c(avg_calendars_agg$p_sockeye, 1)
+
+calendars_agg$p_chum[year(calendars_agg$date) == 2017] = avg_calendars_agg$p_chum
+calendars_agg$p_sockeye[year(calendars_agg$date) == 2017] = avg_calendars_agg$p_sockeye
 
 # add on the aggregate to the stratefied estimates
 calendars_agg = cbind(group = "aggrt", calendars_agg)
@@ -116,7 +117,7 @@ calendars_agg = cbind(group = "aggrt", calendars_agg)
 calendars = rbind(calendars, calendars_agg)
 
 # get the last opener that was monitored in each year
-last_opener = lapply(split(meta[meta$flights_flown > 0,], year(meta$start[meta$flights_flown > 0])), function(df) date(df$start[nrow(df)]))
+last_opener = lapply(split(openers_all[openers_all$flights_flown > 0,], year(openers_all$start[openers_all$flights_flown > 0])), function(df) date(df$start[nrow(df)]))
 
 # cumulative harvest proportion by year and species up to and including the last monitored opener
 p_timing = do.call(rbind, lapply(last_opener, function(d) calendars[calendars$date == d,]))

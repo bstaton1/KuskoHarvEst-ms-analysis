@@ -8,10 +8,10 @@ source(file.path(this.path::this.proj(), "session-setup.R"))
 source(file.path(proj_dir, "validation/prepare-truth.R"))
 
 # load the in-season harvest estimates
-data(harvest_estimate_master, package = "KuskoHarvData")
+data(harv_est_all, package = "KuskoHarvData")
 
 # give it a shorter name
-ests = harvest_estimate_master
+ests = harv_est_all
 head(ests)
 
 # these are the total estimates as obtained by the in-season program

@@ -25,19 +25,18 @@ if (!dir.exists(table_dir)) dir.create(table_dir)
 ppi = 600
 
 # Load data sets
-data(meta, package = "KuskoHarvData")
-data(harvest_estimate_master, package = "KuskoHarvData")
-data(effort_estimate_master, package = "KuskoHarvData")
-data(interview_data_master, package = "KuskoHarvData")
-data(flight_data_master, package = "KuskoHarvData")
+data(openers_all, package = "KuskoHarvData")
+data(harv_est_all, package = "KuskoHarvData")
+data(effort_est_all, package = "KuskoHarvData")
+data(interview_data_all, package = "KuskoHarvData")
+data(flight_data_all, package = "KuskoHarvData")
 
 # which dates will be reported: those not in August and that had non-zero flights
-report_dates = lubridate::date(meta$start)[lubridate::month(meta$start) != 8 & meta$flights_flown > 0]
+report_dates = lubridate::date(openers_all$start)[lubridate::month(openers_all$start) != 8 & openers_all$flights_flown > 0]
 
 # filter out the non-reporting dates from each info set
-H_ests = subset(harvest_estimate_master, date %in% report_dates)
-E_ests = subset(effort_estimate_master, date %in% report_dates)
-I_data = subset(interview_data_master, lubridate::date(trip_start) %in% report_dates)
-F_data = subset(flight_data_master, lubridate::date(start_time) %in% report_dates)
-M_info = subset(meta, lubridate::date(start) %in% report_dates)
-
+H_ests = subset(harv_est_all, date %in% report_dates)
+E_ests = subset(effort_est_all, date %in% report_dates)
+I_data = subset(interview_data_all, lubridate::date(trip_start) %in% report_dates)
+F_data = subset(flight_data_all, lubridate::date(start_time) %in% report_dates)
+M_info = subset(openers_all, lubridate::date(start) %in% report_dates)

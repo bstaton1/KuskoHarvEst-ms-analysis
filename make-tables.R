@@ -10,8 +10,8 @@ source(file.path(this.path::this.proj(), "session-setup.R"))
 source(file.path(proj_dir, "validation/prepare-calendar-data.R"))
 
 # load the raw interview data: includes all interviews, even for the three openers with no flight data
-data(interview_data_master, package = "KuskoHarvData")
-dat = interview_data_master
+data(interview_data_all, package = "KuskoHarvData")
+dat = interview_data_all
 
 # handle villages
 dat$village[dat$village == "#VALUE!"] = NA
@@ -52,7 +52,7 @@ stratum_counts = stratum_counts[order(stratum_counts$village),]
 write.csv(stratum_counts, file.path(table_dir, "interviews-by-village-and-stratum.csv"), row.names = FALSE)
 
 # remove these versions of the interview data
-rm(interview_data_master); rm(dat)
+rm(interview_data_all); rm(dat)
 
 ##### MAKE FILE: obs-effort-ests.csv #####
 
