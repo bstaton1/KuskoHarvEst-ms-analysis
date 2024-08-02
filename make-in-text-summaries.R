@@ -19,7 +19,7 @@ chum_ans = c(41200,116400)
 sockeye_ans = c(32200,58700)
 
 # which years to calculate proportional summary statistics
-p_yrs = 2010:2021
+p_yrs = 2010:2022
 
 # calculate total harvest by year from PSMP
 all_totals = harv_all %>%
