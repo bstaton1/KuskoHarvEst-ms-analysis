@@ -183,7 +183,7 @@ errors = lapply(KuskoHarvUtils::capitalize(spp), function(s) {
 names(errors) = spp
 
 # extract and format the correlation and mean percent error
-RHOS = sapply(errors, function(s) KuskoHarvUtils::percentize(s$summary["RHO"]) |> unname())
+RHOS = sapply(errors, function(s) round(s$summary["RHO"], 2) |> unname())
 MPES = sapply(errors, function(s) KuskoHarvUtils::percentize(s$summary["MPE"]) |> unname())
 
 # get mean percent error for chinook by spatial stratum
