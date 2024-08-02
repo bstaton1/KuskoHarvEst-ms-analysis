@@ -15,3 +15,9 @@
 # figure and table content: reproducible from source
 figures/
 tables/
+
+# draw.io bkp file
+*.bkp
+
+# draw.io output files
+venn-*.png
