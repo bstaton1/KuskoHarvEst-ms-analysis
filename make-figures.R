@@ -160,7 +160,7 @@ scatter_f = function(species, strat, legend_loc) {
        labels = paste0("", KuskoHarvUtils::capitalize(strat), ""), pos = 4, cex = text_cex * 1.2)
   
   # summarize percent errors and correlation in estimates
-  errors = KuskoHarvUtils::get_errors(yhat = x$ISMP, yobs = x$PSMP)
+  errors = KuskoHarvUtils::get_errors(yhat = x$ISMP, yobs = x$PSMP, FUN = mean)
   errors = KuskoHarvUtils::percentize(errors$summary[c("MPE", "MAPE", "RHO")])
   
   # include error type labels if a main plot, otherwise just show numbers

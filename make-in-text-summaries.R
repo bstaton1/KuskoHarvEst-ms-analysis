@@ -175,7 +175,7 @@ errors = lapply(KuskoHarvUtils::capitalize(spp), function(s) {
   psmp = sub$value[sub$prgm == "PSMP"]
   
   # summarize the errors
-  errors = KuskoHarvUtils::get_errors(yhat = ismp, yobs = psmp)
+  errors = KuskoHarvUtils::get_errors(yhat = ismp, yobs = psmp, FUN = mean)
   names(errors$error) = sort(unique(sub$year))
   names(errors$p_error) = sort(unique(sub$year))
   errors
@@ -191,7 +191,7 @@ chinook_MPE = sapply(c("A", "B", "C", "D1"), function(s) {
   sub = subset(values, spp == "Chinook" & stratum == s & stat == "est")
   ismp = sub$value[sub$prgm == "ISMP"]
   psmp = sub$value[sub$prgm == "PSMP"]
-  errors = KuskoHarvUtils::get_errors(yhat = ismp, yobs = psmp)
+  errors = KuskoHarvUtils::get_errors(yhat = ismp, yobs = psmp, FUN = mean)
   unname(KuskoHarvUtils::percentize(errors$summary["MPE"]))
 })
 
