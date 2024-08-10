@@ -160,7 +160,7 @@ scatter_f = function(species, strat, legend_loc) {
        labels = paste0("", KuskoHarvUtils::capitalize(strat), ""), pos = 4, cex = text_cex * 1.2)
   
   # summarize percent errors and correlation in estimates
-  errors = KuskoHarvUtils::get_errors(yhat = x$ISMP, yobs = x$PSMP)
+  errors = KuskoHarvUtils::get_errors(yhat = x$ISMP, yobs = x$PSMP, FUN = mean)
   errors = KuskoHarvUtils::percentize(errors$summary[c("MPE", "MAPE", "RHO")])
   
   # include error type labels if a main plot, otherwise just show numbers
@@ -224,8 +224,8 @@ dev.off()
 source(file.path(proj_dir, "validation/prepare-calendar-data.R"))
 
 # load opener information and harvest estimates: reload to get all openers (including the 3 unmonitored)
-data(meta, package = "KuskoHarvData")
-data(harvest_estimate_master, package = "KuskoHarvData")
+data(openers_all, package = "KuskoHarvData")
+data(harv_est_all, package = "KuskoHarvData")
 
 # set the colors
 cols = c("chinook" = "black", "chum" = "royalblue", "sockeye" = "tomato")
@@ -241,7 +241,7 @@ calendar_plot = function(y, legend = FALSE, xaxis = TRUE) {
   if (any(duplicated(dat$date))) dat = dat[!duplicated(dat$date),]
   
   # get in-season harvest estimates by opener for this year
-  ests = subset(harvest_estimate_master, year(date) == y & stratum == "total" & quantity == "mean" & species != "total")
+  ests = subset(harv_est_all, year(date) == y & stratum == "total" & quantity == "mean" & species != "total")
   ests = dcast(ests, date ~ species, value.var = "estimate")
   ests[is.na(ests)] = 0
   
@@ -260,7 +260,7 @@ calendar_plot = function(y, legend = FALSE, xaxis = TRUE) {
     lines(p_chum ~ date, col = cols["chum"], lwd = 2)
     
     # add lines at the dates of the openers
-    abline(v = date(meta$start[year(meta$start) == y]), col = "grey50", lty = 2)
+    abline(v = date(openers_all$start[year(openers_all$start) == y]), col = "grey50", lty = 2)
     
     # get user coordinates of plotting region
     usr = par("usr"); xdiff = diff(usr[1:2]); ydiff = diff(usr[3:4])
@@ -308,7 +308,7 @@ mtext(side = 2, outer = TRUE, line = 0.5, "Cumulative Harvest Proportion")
 dev.off()
 
 # remove these versions of meta and harvest_estimate_master
-rm(meta); rm(harvest_estimate_master)
+rm(openers_all); rm(harv_est_all)
 
 ##### MAKE FIGURE: p-covered.png #####
 
