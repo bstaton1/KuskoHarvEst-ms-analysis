@@ -147,12 +147,11 @@ scatter_f = function(species, strat, legend_loc) {
   usr = par("usr"); xdiff = diff(usr[1:2]); ydiff = diff(usr[3:4])
   
   # draw the ISMP vs. PSMP estimates
-  points(ISMP ~ PSMP, data = x, pch = 16, cex = pt_cex)
+  points(ISMP ~ PSMP, data = x, pch = 21, bg = "white", cex = pt_cex * 1.6, lwd = 0.5, col = scales::alpha("black", 1))
   
   # label the years
-  text(I(ISMP + ydiff * off) ~ I(PSMP + xdiff * off), data = x,
-       labels = paste0("'", substr(year, 3, 4)),
-       col = scales::alpha("black", 0.5), cex = text_cex)
+  text(ISMP ~ PSMP, data = x, labels = substr(year, 3, 4), cex = text_cex * 0.7, col = scales::alpha("black", 0.5), font = 2)
+  
   
   # label the stratum
   text(x = usr[1] - xdiff * ifelse(strat == "total", 0, 0.025),
@@ -161,15 +160,21 @@ scatter_f = function(species, strat, legend_loc) {
   
   # summarize percent errors and correlation in estimates
   errors = KuskoHarvUtils::get_errors(yhat = x$ISMP, yobs = x$PSMP, FUN = mean)
-  errors = KuskoHarvUtils::percentize(errors$summary[c("MPE", "MAPE", "RHO")])
+  errors = c(KuskoHarvUtils::percentize(errors$summary[c("MPE", "MAPE")]), round(errors$summary["RHO"], 2))
   
-  # include error type labels if a main plot, otherwise just show numbers
-  if(strat == "total") error_text = paste0(names(errors), ": ", errors) else error_text = errors
+  # include error type labels
+  error_text = paste0(names(errors), ": ", errors)
   
-  # draw the error summaries
-  x_loc = usr[1] + xdiff * ifelse(strat == "total", -0.05, -0.085)
-  y_loc = usr[4] - ydiff * ifelse(strat == "total", 0.08, 0.1)
-  legend(x = x_loc, y = y_loc, legend = error_text, cex = text_cex * 0.8, bty = "n")
+  # draw the error summaries: some nasty fine-tuning here to place the legend in the correct corner
+  # so as to not vastly overlap the data for a given panel
+  x_use = ifelse(stringr::str_detect(legend_loc, "left"), 1, 2)
+  y_use = ifelse(stringr::str_detect(legend_loc, "bottom"), 3, 4)
+  x_sign = ifelse(x_use == 1, -1, 0.2)
+  y_sign = ifelse(y_use == 3, -0.3, -1)
+  x_loc = usr[x_use] + x_sign * xdiff * ifelse(strat == "total", 0.05, 0.1)
+  y_loc = usr[y_use] + y_sign * ydiff * ifelse(strat == "total", 0.08, 0.1)
+  legend(x = x_loc, y = y_loc, legend = error_text, cex = text_cex * 0.8, bty = "n", 
+         xjust = ifelse(x_use == 1, 0, 1), yjust = ifelse(y_use == 3, 0, 1))
   
   # draw a 1:1 line
   abline(0,1, lty = 2)
@@ -190,7 +195,7 @@ par(mar = c(1.25,1.25,0.25,0.25), tcl = -0.15, mgp = c(2,0.25,0), cex.axis = 0.9
 # all Chinook plots
 scatter_f("Chinook", "total", legend_loc = "topleft"); mtext(side = 3, adj = 0, "(a) Chinook")
 scatter_f("Chinook", "A", legend_loc = "bottomright")
-scatter_f("Chinook", "B", legend_loc = "topleft")
+scatter_f("Chinook", "B", legend_loc = "bottomright")
 scatter_f("Chinook", "C", legend_loc = "topleft")
 scatter_f("Chinook", "D1", legend_loc = "bottomright")
 
@@ -199,12 +204,12 @@ scatter_f("Chum", "total", legend_loc = "topleft"); mtext(side = 3, adj = 0, "(b
 scatter_f("Chum", "A", legend_loc = "bottomright")
 scatter_f("Chum", "B", legend_loc = "bottomright")
 scatter_f("Chum", "C", legend_loc = "topleft")
-scatter_f("Chum", "D1", legend_loc = "topleft")
+scatter_f("Chum", "D1", legend_loc = "bottomright")
 
 # all Sockeye plots
 scatter_f("Sockeye", "total", legend_loc = "topleft"); mtext(side = 3, adj = 0, "(c) Sockeye")
 scatter_f("Sockeye", "A", legend_loc = "topleft")
-scatter_f("Sockeye", "B", legend_loc = "topleft")
+scatter_f("Sockeye", "B", legend_loc = "bottomright")
 scatter_f("Sockeye", "C", legend_loc = "topleft")
 scatter_f("Sockeye", "D1", legend_loc = "topleft")
 
