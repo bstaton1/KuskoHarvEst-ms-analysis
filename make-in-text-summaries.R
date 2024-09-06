@@ -228,21 +228,21 @@ max_p_covered = apply(p_covered, 1, which.max)
 yrs = 2016:2023
 
 # Chinook: get min and max p-covered and the years they happened
-chinook_minp = msdown::report_num(p_covered["chinook",min_p_covered["chinook"]], is_percent = TRUE)
+chinook_minp = KuskoHarvUtils::percentize(p_covered["chinook",min_p_covered["chinook"]])
 chinook_minp_Y = yrs[min_p_covered["chinook"]]
-chinook_maxp = msdown::report_num(p_covered["chinook",max_p_covered["chinook"]], is_percent = TRUE)
+chinook_maxp = KuskoHarvUtils::percentize(p_covered["chinook",max_p_covered["chinook"]])
 chinook_maxp_Y = yrs[max_p_covered["chinook"]]
 
 # chum: get min and max p-covered and the years they happened
-chum_minp = msdown::report_num(p_covered["chum",min_p_covered["chum"]], is_percent = TRUE)
+chum_minp = KuskoHarvUtils::percentize(p_covered["chum",min_p_covered["chum"]])
 chum_minp_Y = yrs[min_p_covered["chum"]]
-chum_maxp = msdown::report_num(p_covered["chum",max_p_covered["chum"]], is_percent = TRUE)
+chum_maxp = KuskoHarvUtils::percentize(p_covered["chum",max_p_covered["chum"]])
 chum_maxp_Y = yrs[max_p_covered["chum"]]
 
 # sockeye: get min and max p-covered and the years they happened
-sockeye_minp = msdown::report_num(p_covered["sockeye",min_p_covered["sockeye"]], is_percent = TRUE)
+sockeye_minp = KuskoHarvUtils::percentize(p_covered["sockeye",min_p_covered["sockeye"]])
 sockeye_minp_Y = yrs[min_p_covered["sockeye"]]
-sockeye_maxp = msdown::report_num(p_covered["sockeye",max_p_covered["sockeye"]], is_percent = TRUE)
+sockeye_maxp = KuskoHarvUtils::percentize(p_covered["sockeye",max_p_covered["sockeye"]])
 sockeye_maxp_Y = yrs[max_p_covered["sockeye"]]
 
 ##### IN-TEXT NUMBERS: SECTION 'RESULTS > EVALUATION OF EFFORT ESTIMATOR VIA STOCHASTIC SIMULATION > SIMPLE SIMULATION #####

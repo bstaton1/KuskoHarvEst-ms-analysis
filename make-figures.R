@@ -2,9 +2,12 @@
 # set up session
 source(file.path(this.path::this.proj(), "session-setup.R"))
 
-##### MAKE FIGURE: p-active-obs.png #####
+# set the figure type to create if doesn't already exist
+if (!exists("file_type")) file_type = "pdf"
 
-# cat("\nMaking Figure: p-active-obs.png\n")
+##### MAKE FIGURE: p-active-obs #####
+
+# cat("\nMaking Figure: p-active-obs\n")
 
 # load the functions from the complex effort simulation
 # loads p_active() function
@@ -93,7 +96,7 @@ f = function(d, x_axis_ticks = TRUE, y_axis_ticks = TRUE) {
 }
 
 # open the graphics device
-png(file.path(figure_dir, "p-active-obs.png"), h = 8 * ppi, w = 7.2 * ppi, res = ppi)
+dev.on(base = "p-active-obs", ext = file_type, height = 8, width = 7.2)
 
 # graphical parameters
 par(yaxs = "i", mar = c(0.6,0.3,0,0.3), oma = c(2.25,4,0.5,0.5), cex.axis = 1, tcl = -0.25, mgp = c(2,0.3,0))
@@ -118,9 +121,9 @@ mtext(side = 2, outer = TRUE, line = 2.25, "% of Trips Active", cex = 1.2)
 # close the device
 dev.off()
 
-##### MAKE FIGURE: harvest-compare.png #####
+##### MAKE FIGURE: harvest-compare #####
 
-# cat("\nMaking Figure: harvest-compare.png\n")
+# cat("\nMaking Figure: harvest-compare\n")
 
 # perform the validation analysis calculations
 source(file.path(proj_dir, "validation/validation-analysis.R"))
@@ -147,12 +150,10 @@ scatter_f = function(species, strat, legend_loc) {
   usr = par("usr"); xdiff = diff(usr[1:2]); ydiff = diff(usr[3:4])
   
   # draw the ISMP vs. PSMP estimates
-  points(ISMP ~ PSMP, data = x, pch = 16, cex = pt_cex)
+  points(ISMP ~ PSMP, data = x, pch = 21, bg = scales::alpha("black", 0.5), cex = pt_cex * 1.6, lwd = 0.0, col = "white")
   
   # label the years
-  text(I(ISMP + ydiff * off) ~ I(PSMP + xdiff * off), data = x,
-       labels = paste0("'", substr(year, 3, 4)),
-       col = scales::alpha("black", 0.5), cex = text_cex)
+  text(ISMP ~ PSMP, data = x, labels = substr(year, 3, 4), cex = text_cex * 0.7, col = "white", font = 2)
   
   # label the stratum
   text(x = usr[1] - xdiff * ifelse(strat == "total", 0, 0.025),
@@ -161,22 +162,28 @@ scatter_f = function(species, strat, legend_loc) {
   
   # summarize percent errors and correlation in estimates
   errors = KuskoHarvUtils::get_errors(yhat = x$ISMP, yobs = x$PSMP, FUN = mean)
-  errors = KuskoHarvUtils::percentize(errors$summary[c("MPE", "MAPE", "RHO")])
+  errors = c(KuskoHarvUtils::percentize(errors$summary[c("MPE", "MAPE")]), round(errors$summary["RHO"], 2))
   
-  # include error type labels if a main plot, otherwise just show numbers
-  if(strat == "total") error_text = paste0(names(errors), ": ", errors) else error_text = errors
+  # include error type labels
+  error_text = paste0(names(errors), ": ", errors)
   
-  # draw the error summaries
-  x_loc = usr[1] + xdiff * ifelse(strat == "total", -0.05, -0.085)
-  y_loc = usr[4] - ydiff * ifelse(strat == "total", 0.08, 0.1)
-  legend(x = x_loc, y = y_loc, legend = error_text, cex = text_cex * 0.8, bty = "n")
+  # draw the error summaries: some nasty fine-tuning here to place the legend in the correct corner
+  # so as to not vastly overlap the data for a given panel
+  x_use = ifelse(stringr::str_detect(legend_loc, "left"), 1, 2)
+  y_use = ifelse(stringr::str_detect(legend_loc, "bottom"), 3, 4)
+  x_sign = ifelse(x_use == 1, -1, 0.2)
+  y_sign = ifelse(y_use == 3, -0.3, -1)
+  x_loc = usr[x_use] + x_sign * xdiff * ifelse(strat == "total", 0.05, 0.1)
+  y_loc = usr[y_use] + y_sign * ydiff * ifelse(strat == "total", 0.08, 0.1)
+  legend(x = x_loc, y = y_loc, legend = error_text, cex = text_cex * 0.8, bty = "n", 
+         xjust = ifelse(x_use == 1, 0, 1), yjust = ifelse(y_use == 3, 0, 1))
   
   # draw a 1:1 line
   abline(0,1, lty = 2)
 }
 
 # open a graphics device
-png(file.path(figure_dir, "harvest-compare.png"), width = 7.5 * ppi, height = 4.75 * ppi, res = ppi)
+dev.on(base = "harvest-compare", ext = file_type, width = 7.5, height = 4.75)
 
 # set the layout
 m1 = matrix(c(1,1,2,3,4,5), 3, 2, byrow = TRUE)
@@ -190,7 +197,7 @@ par(mar = c(1.25,1.25,0.25,0.25), tcl = -0.15, mgp = c(2,0.25,0), cex.axis = 0.9
 # all Chinook plots
 scatter_f("Chinook", "total", legend_loc = "topleft"); mtext(side = 3, adj = 0, "(a) Chinook")
 scatter_f("Chinook", "A", legend_loc = "bottomright")
-scatter_f("Chinook", "B", legend_loc = "topleft")
+scatter_f("Chinook", "B", legend_loc = "bottomright")
 scatter_f("Chinook", "C", legend_loc = "topleft")
 scatter_f("Chinook", "D1", legend_loc = "bottomright")
 
@@ -199,12 +206,12 @@ scatter_f("Chum", "total", legend_loc = "topleft"); mtext(side = 3, adj = 0, "(b
 scatter_f("Chum", "A", legend_loc = "bottomright")
 scatter_f("Chum", "B", legend_loc = "bottomright")
 scatter_f("Chum", "C", legend_loc = "topleft")
-scatter_f("Chum", "D1", legend_loc = "topleft")
+scatter_f("Chum", "D1", legend_loc = "bottomright")
 
 # all Sockeye plots
 scatter_f("Sockeye", "total", legend_loc = "topleft"); mtext(side = 3, adj = 0, "(c) Sockeye")
 scatter_f("Sockeye", "A", legend_loc = "topleft")
-scatter_f("Sockeye", "B", legend_loc = "topleft")
+scatter_f("Sockeye", "B", legend_loc = "bottomright")
 scatter_f("Sockeye", "C", legend_loc = "topleft")
 scatter_f("Sockeye", "D1", legend_loc = "topleft")
 
@@ -216,9 +223,9 @@ mtext(side = 2, outer = TRUE, line = 0.5, "In-season Estimate (1,000s)")
 # close the device
 dev.off()
 
-##### MAKE FIGURE: p-timing.png #####
+##### MAKE FIGURE: p-timing #####
 
-# cat("\nMaking Figure: p-timing.png\n")
+# cat("\nMaking Figure: p-timing\n")
 
 # prepare the calendar information
 source(file.path(proj_dir, "validation/prepare-calendar-data.R"))
@@ -278,7 +285,7 @@ calendar_plot = function(y, legend = FALSE, xaxis = TRUE) {
 }
 
 # open a PNG graphics device
-png(file.path(figure_dir, "p-timing.png"), width = 7.5 * ppi, height = 6.25 * ppi, res = ppi)
+dev.on(base = "p-timing", ext = file_type, width = 7.5, height = 6.25)
 
 # set graphical parameters
 par(mfrow = c(3,3), mar = c(1,1.5,1,0.75), yaxs = "i", oma = c(1.5,1.75,0,0), mgp = c(2,0.25,0), tcl = -0.15, cex.axis = 0.95, lend = "square", ljoin = "mitre")
@@ -310,9 +317,9 @@ dev.off()
 # remove these versions of meta and harvest_estimate_master
 rm(openers_all); rm(harv_est_all)
 
-##### MAKE FIGURE: p-covered.png #####
+##### MAKE FIGURE: p-covered #####
 
-# cat("\nMaking Figure: p-covered.png\n")
+# cat("\nMaking Figure: p-covered\n")
 
 # perform the validation analysis calculations
 source(file.path(proj_dir, "validation/validation-analysis.R"))
@@ -341,7 +348,7 @@ colnames(p_covered) = NULL
 greys = c("grey20", "grey50", "grey75")
 
 # open a PNG graphics device
-png(file.path(figure_dir, "p-covered.png"), width = 3.45 * ppi, height = 3 * ppi, res = ppi)
+dev.on(base = "p-covered", ext = file_type, width = 3.45, height = 3)
 
 # set graphical parameters
 par(mar = c(1.25,2.75,1,0.25), mgp = c(2,0.2,0), tcl = -0.15, cex.axis = 0.7, lend = "square", ljoin = "mitre")
