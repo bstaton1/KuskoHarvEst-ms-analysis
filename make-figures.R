@@ -147,11 +147,10 @@ scatter_f = function(species, strat, legend_loc) {
   usr = par("usr"); xdiff = diff(usr[1:2]); ydiff = diff(usr[3:4])
   
   # draw the ISMP vs. PSMP estimates
-  points(ISMP ~ PSMP, data = x, pch = 21, bg = "white", cex = pt_cex * 1.6, lwd = 0.5, col = scales::alpha("black", 1))
+  points(ISMP ~ PSMP, data = x, pch = 21, bg = scales::alpha("black", 0.5), cex = pt_cex * 1.6, lwd = 0.0, col = "white")
   
   # label the years
-  text(ISMP ~ PSMP, data = x, labels = substr(year, 3, 4), cex = text_cex * 0.7, col = scales::alpha("black", 0.5), font = 2)
-  
+  text(ISMP ~ PSMP, data = x, labels = substr(year, 3, 4), cex = text_cex * 0.7, col = "white", font = 2)
   
   # label the stratum
   text(x = usr[1] - xdiff * ifelse(strat == "total", 0, 0.025),
