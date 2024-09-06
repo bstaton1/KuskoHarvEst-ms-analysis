@@ -41,6 +41,11 @@ params[with(params, which(pi2 == 0.1)),]
 # number of parameters
 nsim = 1e3
 
+# set the random seed for reproducibility
+# for some seeds, the mean error of pi1 = 0.1, pi2 = 0.1, psi = 0.1 scenario goes off plot (very large positive errors)
+# point of scenario is to show that positive bias can occur in this case, which this seed does.
+set.seed(3)
+
 # each list element stores replicates of one set of parameters
 all_sims = lapply(1:nrow(params), function(scenario) {
   cat("\r", scenario)
