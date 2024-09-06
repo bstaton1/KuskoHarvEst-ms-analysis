@@ -114,11 +114,10 @@ f = function(which_pi2, yaxt_inc = 0.25, labels) {
        labels = latex2exp::TeX(paste0("$\\pi_{2}\\,=\\,", pi2_vals, "$")), pos = 2)
 }
 
-# create the figure
-ppi = 600
-
 # open a device
-png(file.path(figure_dir, "simple-sim.png"), h = 6 * ppi, w = 3.45 * ppi, res = ppi)
+# file_type = "png"
+file_type = "pdf"
+dev.on(base = "simple-sim", ext = file_type, height = 6, width = 3.45)
 
 # set graphical parameters
 par(mfrow = c(3,1), mgp = c(2,0.35,0), tcl = -0.15, mar = c(3,0.5,0,1),
@@ -138,4 +137,4 @@ mtext(side = 2, outer = TRUE, line = 2.25, "% Error in Estimated Trips (N)")
 mtext(side = 1, outer = TRUE, line = -0.5, latex2exp::TeX("$\\psi$"), cex = 1.2)
 
 # close the device
-dev.off()
+dev.off(); file.show("figures/simple-sim.pdf")

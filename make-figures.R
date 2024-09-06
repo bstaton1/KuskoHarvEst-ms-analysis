@@ -2,9 +2,12 @@
 # set up session
 source(file.path(this.path::this.proj(), "session-setup.R"))
 
-##### MAKE FIGURE: p-active-obs.png #####
+# set the figure type to create if doesn't already exist
+if (!exists("file_type")) file_type = "pdf"
 
-# cat("\nMaking Figure: p-active-obs.png\n")
+##### MAKE FIGURE: p-active-obs #####
+
+# cat("\nMaking Figure: p-active-obs\n")
 
 # load the functions from the complex effort simulation
 # loads p_active() function
@@ -93,7 +96,7 @@ f = function(d, x_axis_ticks = TRUE, y_axis_ticks = TRUE) {
 }
 
 # open the graphics device
-png(file.path(figure_dir, "p-active-obs.png"), h = 8 * ppi, w = 7.2 * ppi, res = ppi)
+dev.on(base = "p-active-obs", ext = file_type, height = 8, width = 7.2)
 
 # graphical parameters
 par(yaxs = "i", mar = c(0.6,0.3,0,0.3), oma = c(2.25,4,0.5,0.5), cex.axis = 1, tcl = -0.25, mgp = c(2,0.3,0))
@@ -118,9 +121,9 @@ mtext(side = 2, outer = TRUE, line = 2.25, "% of Trips Active", cex = 1.2)
 # close the device
 dev.off()
 
-##### MAKE FIGURE: harvest-compare.png #####
+##### MAKE FIGURE: harvest-compare #####
 
-# cat("\nMaking Figure: harvest-compare.png\n")
+# cat("\nMaking Figure: harvest-compare\n")
 
 # perform the validation analysis calculations
 source(file.path(proj_dir, "validation/validation-analysis.R"))
@@ -180,7 +183,7 @@ scatter_f = function(species, strat, legend_loc) {
 }
 
 # open a graphics device
-png(file.path(figure_dir, "harvest-compare.png"), width = 7.5 * ppi, height = 4.75 * ppi, res = ppi)
+dev.on(base = "harvest-compare", ext = file_type, width = 7.5, height = 4.75)
 
 # set the layout
 m1 = matrix(c(1,1,2,3,4,5), 3, 2, byrow = TRUE)
@@ -220,9 +223,9 @@ mtext(side = 2, outer = TRUE, line = 0.5, "In-season Estimate (1,000s)")
 # close the device
 dev.off()
 
-##### MAKE FIGURE: p-timing.png #####
+##### MAKE FIGURE: p-timing #####
 
-# cat("\nMaking Figure: p-timing.png\n")
+# cat("\nMaking Figure: p-timing\n")
 
 # prepare the calendar information
 source(file.path(proj_dir, "validation/prepare-calendar-data.R"))
@@ -282,7 +285,7 @@ calendar_plot = function(y, legend = FALSE, xaxis = TRUE) {
 }
 
 # open a PNG graphics device
-png(file.path(figure_dir, "p-timing.png"), width = 7.5 * ppi, height = 6.25 * ppi, res = ppi)
+dev.on(base = "p-timing", ext = file_type, width = 7.5, height = 6.25)
 
 # set graphical parameters
 par(mfrow = c(3,3), mar = c(1,1.5,1,0.75), yaxs = "i", oma = c(1.5,1.75,0,0), mgp = c(2,0.25,0), tcl = -0.15, cex.axis = 0.95, lend = "square", ljoin = "mitre")
@@ -314,9 +317,9 @@ dev.off()
 # remove these versions of meta and harvest_estimate_master
 rm(openers_all); rm(harv_est_all)
 
-##### MAKE FIGURE: p-covered.png #####
+##### MAKE FIGURE: p-covered #####
 
-# cat("\nMaking Figure: p-covered.png\n")
+# cat("\nMaking Figure: p-covered\n")
 
 # perform the validation analysis calculations
 source(file.path(proj_dir, "validation/validation-analysis.R"))
@@ -345,7 +348,7 @@ colnames(p_covered) = NULL
 greys = c("grey20", "grey50", "grey75")
 
 # open a PNG graphics device
-png(file.path(figure_dir, "p-covered.png"), width = 3.45 * ppi, height = 3 * ppi, res = ppi)
+dev.on(base = "p-covered", ext = file_type, width = 3.45, height = 3)
 
 # set graphical parameters
 par(mar = c(1.25,2.75,1,0.25), mgp = c(2,0.2,0), tcl = -0.15, cex.axis = 0.7, lend = "square", ljoin = "mitre")
