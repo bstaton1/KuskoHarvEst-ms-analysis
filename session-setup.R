@@ -40,3 +40,19 @@ E_ests = subset(effort_est_all, date %in% report_dates)
 I_data = subset(interview_data_all, lubridate::date(trip_start) %in% report_dates)
 F_data = subset(flight_data_all, lubridate::date(start_time) %in% report_dates)
 M_info = subset(openers_all, lubridate::date(start) %in% report_dates)
+
+# function to flexibly create a plot file
+dev.on = function(base = "fig", ext = "png", dir = figure_dir, width, height, ppi = 600) {
+  # ensure file extension is lower case
+  ext = tolower(ext)
+  
+  # build path
+  path = file.path(dir, paste0(base, ".", ext))
+  
+  # stop if unaccepted ext type
+  if (!ext %in% c("pdf", "png")) stop ("ext must be one of 'pdf' or 'png'")
+  
+  # open the appropriate device
+  if (ext == "pdf") pdf(path, width = width, height = height)
+  if (ext == "png") png(path, width = width * ppi, height = height * ppi, res = ppi)
+}
