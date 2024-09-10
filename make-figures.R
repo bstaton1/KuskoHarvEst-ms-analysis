@@ -302,9 +302,9 @@ legend(x = 0.5, y = 0.95, xjust = 0.5, title = "Species",
        col = cols, bty = "n", cex = 1.1, title.font = 2, seg.len = 1.5,
        pch = 22, pt.lwd = 1, pt.bg = tcols, pt.cex = 2, lwd = 2)
 legend(x = 0.5, y = 0.5, xjust = 0.5, title = "Data Source",
-       legend = c("ISMP Monitored", "ISMP Unmontiored", "ADF&G Calendars"),
+       legend = c("ISMP Monitored", "ISMP Unmonitored", "ADF&G Calendars"),
        col = "grey50", bty = "n", cex = 1.1, title.font = 2, seg.len = 1.5,
-       pch = c(1,16,NA), pt.lwd = c(1,1,NA), pt.cex = c(1.5,1.5,NA), lwd = c(NA,NA,2))
+       pch = c(16,1,NA), pt.lwd = c(1,1,NA), pt.cex = c(1.5,1.5,NA), lwd = c(NA,NA,2))
 box()
 
 # axes labels
