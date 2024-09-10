@@ -11,8 +11,8 @@
 # 2019: http://www.adfg.alaska.gov/techpap/TP475.pdf
 # 2020: http://www.adfg.alaska.gov/techpap/TP483.pdf
 # 2021: http://www.adfg.alaska.gov/techpap/TP489.pdf
-# 2022: Unpublished, data provided by D. Koster
-# 2023: Not yet available
+# 2022: https://www.adfg.alaska.gov/techpap/TP502.pdf
+# 2023: Unpublished, data provided by D. Koster
 
 # prepare timing data (post-season source)
 source(file.path(proj_dir, "validation/prepare-calendar-data.R"))

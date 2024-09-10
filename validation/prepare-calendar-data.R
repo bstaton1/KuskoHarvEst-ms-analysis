@@ -1,7 +1,4 @@
 
-# load the opener meta-data: for info about the timing of openers monitored by the in-season program
-data(openers_all, package = "KuskoHarvData")
-
 # read in the data file
 dat_raw = read.csv(file.path(data_dir, "Calendar Data.csv"))
 
@@ -33,7 +30,7 @@ v_df$village = factor(v_df$village, levels = v_df$village)
 dat_raw = dat_raw[dat_raw$village %in% unlist(v_list),]
 
 # keep only years that have in-season data
-dat_raw = dat_raw[dat_raw$year %in% unique(year(openers_all$start)),]
+dat_raw = dat_raw[dat_raw$year %in% unique(year(M_info$start)),]
 
 # years to calculate calendars for
 yrs = unique(dat_raw$year)
@@ -94,8 +91,6 @@ calendars = lapply(names(v_list), function(x) {
   return(out)
 }); calendars = do.call(rbind, calendars)
 
-# calendars$group = factor(calendars$group, levels = levels(v_df$group))
-
 # obtain the calendar summaries for the aggregate of all villages (i.e., remove group structure)
 calendars_agg = do.call(rbind, lapply(yrs, calendar_prep, v = unlist(v_list)))
 
@@ -110,14 +105,14 @@ avg_calendars_agg = calendars_agg |>
 calendars_agg$p_chum[year(calendars_agg$date) == 2017] = avg_calendars_agg$p_chum
 calendars_agg$p_sockeye[year(calendars_agg$date) == 2017] = avg_calendars_agg$p_sockeye
 
-# add on the aggregate to the stratefied estimates
+# add on the aggregate to the stratified estimates
 calendars_agg = cbind(group = "aggrt", calendars_agg)
 
 # combine aggregate with groups
 calendars = rbind(calendars, calendars_agg)
 
 # get the last opener that was monitored in each year
-last_opener = lapply(split(openers_all[openers_all$flights_flown > 0,], year(openers_all$start[openers_all$flights_flown > 0])), function(df) date(df$start[nrow(df)]))
+last_opener = lapply(split(M_info[M_info$flights_flown > 0,], year(M_info$start[M_info$flights_flown > 0])), function(df) date(df$start[nrow(df)]))
 
 # cumulative harvest proportion by year and species up to and including the last monitored opener
 p_timing = do.call(rbind, lapply(last_opener, function(d) calendars[calendars$date == d,]))
