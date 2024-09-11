@@ -1,10 +1,10 @@
 
-> This repository stores the code and data used to perform the analysis presented in the manuscript *In-season monitoring of harvest and effort form a large-scale subsistence salmon fishery in western Alaska* by authors B. Staton, W. Bechtol, L. Coggins, G. Decossas, and J. Esquible.
+> This repository stores the code and data used to perform the analysis presented in the research article *In-season monitoring of harvest and effort form a large-scale subsistence salmon fishery in western Alaska* by authors B. Staton, W. Bechtol, L. Coggins, G. Decossas, and J. Esquible.
 >
-> **The manuscript is under review.**
+> The article is published in the *Canadian Journal of Fisheries and Aquatic Sciences*.
 
-[![ArticleDOI](https://img.shields.io/badge/Article-PLACEHOLDER%20IF%20ACCEPTED-blue?logo=doi&logoColor=f5f5f5)]()  
-[![GitHub Repo Archive DOI](https://img.shields.io/badge/GitHub%20Repo%20Archive-PLACEHOLDER%20WHEN%20MINTED-blue?logo=github)]()
+[![ArticleDOI](https://img.shields.io/badge/Article-10.1139/cjfas--2023--0369-blue?logo=doi&logoColor=f5f5f5)](https://doi.org/10.1139/cjfas-2023-0369)  
+[![GitHub Repo Archive DOI](https://img.shields.io/badge/GitHub%20Repo%20Archive-10.5281/zenodo.10369148-blue?logo=github)](https://doi.org/10.5281/zenodo.10369148)
 
 ## Repository Structure
 
@@ -118,7 +118,7 @@ After executing this code, the there will be two new subdirectories: `figures` a
     ##  collate  English_United States.utf8
     ##  ctype    English_United States.utf8
     ##  tz       America/Los_Angeles
-    ##  date     2024-08-31
+    ##  date     2024-09-11
     ##  pandoc   3.1.11 @ C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
     ## 
     ## ─ Packages ───────────────────────────────────────────────────────────────────
